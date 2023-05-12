@@ -1,31 +1,31 @@
 //
-//  CategoriesCollectionViewCell.swift
+//  ArtistsCollectionViewCell.swift
 //  AppcentTask
 //
-//  Created by Ahmet Can Topcu on 9.05.2023.
+//  Created by Ahmet Can Topcu on 11.05.2023.
 //
 
 import UIKit
 
-class CategoriesCollectionViewCell: UICollectionViewCell {
+class ArtistsCollectionViewCell: UICollectionViewCell {
     
-    @IBOutlet weak var categoryImageView: UIImageView!
-    @IBOutlet weak var categoryName: UILabel!
+    @IBOutlet weak var artistImageView: UIImageView!
+    @IBOutlet weak var artistLbl: UILabel!
     
-    static let identifier = "CategoriesCollectionViewCell"
+    static let identifier = "ArtistsCollectionViewCell"
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        // Set the content mode 
-        categoryImageView.contentMode = .scaleAspectFit
+        // Set the content mode
+         artistImageView.contentMode = .scaleAspectFit
     }
     
-    public func configure(with music: Music) {
+    public func configure(with artist: Artist) {
         
-        self.categoryName.text = music.name
+        self.artistLbl.text = artist.name
         
-        if let url = URL(string: music.pictureMedium) {
+        if let url = URL(string: artist.pictureMedium) {
             URLSession.shared.dataTask(with: url) { data, response, error in
                 if let error = error {
                     print("Error loading image: \(error.localizedDescription)")
@@ -36,16 +36,18 @@ class CategoriesCollectionViewCell: UICollectionViewCell {
                     return
                 }
                 DispatchQueue.main.async {
-                    self.categoryImageView.image = image
+                    self.artistImageView.image = image
                 }
             }.resume()
         } else {
             print("Invalid image URL")
         }
     }
+         
+
     
     static func nib() -> UINib {
-        return UINib(nibName: "CategoriesCollectionViewCell", bundle: nil)
+        return UINib(nibName: "ArtistsCollectionViewCell", bundle: nil)
     }
-    
+
 }

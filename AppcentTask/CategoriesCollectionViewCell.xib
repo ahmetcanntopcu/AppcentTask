@@ -42,7 +42,7 @@
                 <outlet property="categoryImageView" destination="jvr-Yo-Jrm" id="RhF-Va-6oC"/>
                 <outlet property="categoryName" destination="q9i-td-yX3" id="qzu-3h-UwF"/>
             </connections>
-            <point key="canvasLocation" x="301.52671755725191" y="10.563380281690142"/>
+            <point key="canvasLocation" x="-146" y="24"/>
         </collectionViewCell>
     </objects>
 </document>

@@ -56,6 +56,18 @@ class ViewController: UIViewController {
 
 extension ViewController: UICollectionViewDelegate {
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let artistViewController = storyboard.instantiateViewController(withIdentifier: "ArtistViewController") as! ArtistViewController
+        artistViewController.selectedCategoryID = musics[indexPath.row].id
+        artistViewController.titleLabel = musics[indexPath.row].name
+
+        // Push the new view controller onto the navigation stack
+        if let navigationController = self.navigationController {
+            navigationController.pushViewController(artistViewController, animated: true)
+        }
+    }
+    
 }
 
 extension ViewController: UICollectionViewDataSource {
@@ -72,6 +84,7 @@ extension ViewController: UICollectionViewDataSource {
     }
     
 }
+
 extension ViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -85,8 +98,8 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
      
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-            return CGFloat(10)
-        }
+        return CGFloat(10)
+    }
      
 
 }
