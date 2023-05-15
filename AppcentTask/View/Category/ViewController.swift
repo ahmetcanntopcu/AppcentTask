@@ -50,8 +50,6 @@ class ViewController: UIViewController {
         }.resume()
         
     }
-
-
 }
 
 extension ViewController: UICollectionViewDelegate {

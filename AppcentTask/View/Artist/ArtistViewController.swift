@@ -40,6 +40,7 @@ class ArtistViewController: UIViewController {
                 print("Error: \(error?.localizedDescription ?? "Unknown error")")
                 return
             }
+
             do {
                 // Decode the JSON response
                 let decoder = JSONDecoder()
@@ -56,22 +57,25 @@ class ArtistViewController: UIViewController {
             }
         }.resume()
         
-
-        
     }
     
 
 }
 
 extension ArtistViewController: UICollectionViewDelegate {
-    /*
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let artist = artists[indexPath.row]
-        let artistDetailVC = ArtistDetailViewController(artistId: artist.id)
-        navigationController?.pushViewController(artistDetailVC, animated: true)
-    }
-     */
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let albumViewController = storyboard.instantiateViewController(withIdentifier: "AlbumViewController") as! AlbumViewController
+        albumViewController.selectedArtistId = artists[indexPath.row].id
+        albumViewController.artistName = artists[indexPath.row].name
+
+        // Push the new view controller onto the navigation stack
+        if let navigationController = self.navigationController {
+            navigationController.pushViewController(albumViewController, animated: true)
+        }
+    }
+     
 }
 
 extension ArtistViewController: UICollectionViewDataSource {
@@ -86,7 +90,6 @@ extension ArtistViewController: UICollectionViewDataSource {
         cell.configure(with: artist)
         return cell
     }
-    
 }
 
 extension ArtistViewController: UICollectionViewDelegateFlowLayout {
