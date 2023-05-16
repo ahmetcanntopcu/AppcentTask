@@ -19,30 +19,29 @@ class CategoriesCollectionViewCell: UICollectionViewCell {
         
         // Set the content mode 
         categoryImageView.contentMode = .scaleAspectFit
+        
     }
     
     public func configure(with music: Music) {
-        
         self.categoryName.text = music.name
         
         if let url = URL(string: music.pictureMedium) {
-            URLSession.shared.dataTask(with: url) { data, response, error in
-                if let error = error {
+            MusicService.fetchImageData(from: url) { result in
+                switch result {
+                case .success(let imageData):
+                    DispatchQueue.main.async {
+                        let image = UIImage(data: imageData)
+                        self.categoryImageView.image = image
+                    }
+                case .failure(let error):
                     print("Error loading image: \(error.localizedDescription)")
-                    return
                 }
-                guard let data = data, let image = UIImage(data: data) else {
-                    print("Invalid image data")
-                    return
-                }
-                DispatchQueue.main.async {
-                    self.categoryImageView.image = image
-                }
-            }.resume()
+            }
         } else {
             print("Invalid image URL")
         }
     }
+
     
     static func nib() -> UINib {
         return UINib(nibName: "CategoriesCollectionViewCell", bundle: nil)

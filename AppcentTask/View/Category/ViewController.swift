@@ -25,31 +25,24 @@ class ViewController: UIViewController {
         categoriesCollectionView.dataSource = self
         categoriesCollectionView.delegate = self
         
-        
-        // Call the Api
+        // Call the api
         let url = URL(string: "https://api.deezer.com/genre")!
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let data = data, error == nil else {
-                print("Error: \(error?.localizedDescription ?? "Unknown error")")
-                return
-            }
-            do {
-                // Decode the JSON response
-                let decoder = JSONDecoder()
-                let response = try? decoder.decode(MusicResponse.self, from: data)
-                self.musics = response!.data
+        MusicService.fetchData(from: url) { (result: Result<MusicResponse, Error>) in
+            switch result {
+            case .success(let response):
+                self.musics = response.data
                 
                 DispatchQueue.main.async {
                     self.categoriesCollectionView.reloadData()
                 }
-            } catch {
-                print("Error decoding response: \(error.localizedDescription)")
+            case .failure(let error):
+                // Handle the error
+                print("Error: \(error.localizedDescription)")
             }
-            
-            
-        }.resume()
+        }
         
     }
+    
 }
 
 extension ViewController: UICollectionViewDelegate {

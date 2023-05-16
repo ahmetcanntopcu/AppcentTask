@@ -28,36 +28,33 @@ class FavoritesTableViewCell: UITableViewCell {
     }
     
     func configure(with song: Song) {
-        currentSong = song
         // Configure the cell with the song details
+        
+        currentSong = song
         favoriteSongLbl.text = song.title
+        
         let songDuration = song.duration // Şarkı süresi (saniye cinsinden)
         let minutes = songDuration / 60
         let seconds = songDuration % 60
         let formattedDuration = String(format: "%02d:%02d", minutes, seconds)
         favoriteDurationLbl.text = formattedDuration
+        
         if let url = URL(string: AlbumDetailViewController.imageUrl) {
-            
-            URLSession.shared.dataTask(with: url) { data, response, error in
-                print(url)
-                if let error = error {
+            MusicService.fetchImageData(from: url) { result in
+                switch result {
+                case .success(let imageData):
+                    DispatchQueue.main.async {
+                        let image = UIImage(data: imageData)
+                        self.favoriteImageView.image = image
+                    }
+                case .failure(let error):
                     print("Error loading image: \(error.localizedDescription)")
-                    return
                 }
-                guard let data = data, let image = UIImage(data: data) else {
-                    print("Invalid image data")
-                    return
-                }
-                DispatchQueue.main.async {
-                    self.favoriteImageView.image = image
-                }
-            }.resume()
+            }
         } else {
             print("Invalid image URL")
         }
-        // Set the appropriate image for the like button based on the song's liked status
     }
-    
     
     @IBAction func favoriteBtnClicked(_ sender: UIButton) {
         guard let song = currentSong else {

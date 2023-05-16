@@ -21,10 +21,10 @@
 		215C3FBE2A1274180028F62B /* AlbumDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215C3FBD2A1274170028F62B /* AlbumDetailViewController.swift */; };
 		215C3FC02A1277760028F62B /* AlbumDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215C3FBF2A1277760028F62B /* AlbumDetailTableViewCell.swift */; };
 		215C3FC22A129ECD0028F62B /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215C3FC12A129ECD0028F62B /* Song.swift */; };
-		215C3FC42A12B67C0028F62B /* FavoriteSong.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215C3FC32A12B67C0028F62B /* FavoriteSong.swift */; };
 		215C3FC82A12BE160028F62B /* FavoriteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215C3FC72A12BE160028F62B /* FavoriteManager.swift */; };
 		215C3FCA2A12C2320028F62B /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215C3FC92A12C2320028F62B /* FavoritesViewController.swift */; };
 		215C3FCC2A12C6E90028F62B /* FavoritesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215C3FCB2A12C6E90028F62B /* FavoritesTableViewCell.swift */; };
+		215C3FD62A1366A20028F62B /* MusicService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215C3FD52A1366A20028F62B /* MusicService.swift */; };
 		217271BD2A0CE08100BAE103 /* ArtistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217271BC2A0CE08100BAE103 /* ArtistViewController.swift */; };
 		217271BF2A0CE9F600BAE103 /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217271BE2A0CE9F600BAE103 /* Artist.swift */; };
 		217271C22A0CF96200BAE103 /* ArtistsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217271C02A0CF96200BAE103 /* ArtistsCollectionViewCell.swift */; };
@@ -50,10 +50,10 @@
 		215C3FBD2A1274170028F62B /* AlbumDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumDetailViewController.swift; sourceTree = "<group>"; };
 		215C3FBF2A1277760028F62B /* AlbumDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumDetailTableViewCell.swift; sourceTree = "<group>"; };
 		215C3FC12A129ECD0028F62B /* Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
-		215C3FC32A12B67C0028F62B /* FavoriteSong.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteSong.swift; sourceTree = "<group>"; };
 		215C3FC72A12BE160028F62B /* FavoriteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteManager.swift; sourceTree = "<group>"; };
 		215C3FC92A12C2320028F62B /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		215C3FCB2A12C6E90028F62B /* FavoritesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesTableViewCell.swift; sourceTree = "<group>"; };
+		215C3FD52A1366A20028F62B /* MusicService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicService.swift; sourceTree = "<group>"; };
 		217271BC2A0CE08100BAE103 /* ArtistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistViewController.swift; sourceTree = "<group>"; };
 		217271BE2A0CE9F600BAE103 /* Artist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
 		217271C02A0CF96200BAE103 /* ArtistsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistsCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -92,6 +92,7 @@
 		212F38822A09548A00BFE392 /* AppcentTask */ = {
 			isa = PBXGroup;
 			children = (
+				215C3FD42A1366610028F62B /* Service */,
 				215C3FD32A12D8F70028F62B /* Manager */,
 				215C3FCD2A12D80C0028F62B /* View */,
 				212F38972A09569D00BFE392 /* Model */,
@@ -113,7 +114,6 @@
 				21ACDB8A2A0E6644008511CA /* Album.swift */,
 				215C3F952A10DE100028F62B /* Track.swift */,
 				215C3FC12A129ECD0028F62B /* Song.swift */,
-				215C3FC32A12B67C0028F62B /* FavoriteSong.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -183,6 +183,14 @@
 				215C3FC72A12BE160028F62B /* FavoriteManager.swift */,
 			);
 			path = Manager;
+			sourceTree = "<group>";
+		};
+		215C3FD42A1366610028F62B /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				215C3FD52A1366A20028F62B /* MusicService.swift */,
+			);
+			path = Service;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -262,13 +270,13 @@
 				212F38842A09548A00BFE392 /* AppDelegate.swift in Sources */,
 				212F38862A09548A00BFE392 /* SceneDelegate.swift in Sources */,
 				21ACDB852A0E6267008511CA /* AlbumViewController.swift in Sources */,
-				215C3FC42A12B67C0028F62B /* FavoriteSong.swift in Sources */,
 				217271C22A0CF96200BAE103 /* ArtistsCollectionViewCell.swift in Sources */,
 				215C3FC82A12BE160028F62B /* FavoriteManager.swift in Sources */,
 				212F38992A0957E700BFE392 /* Music.swift in Sources */,
 				214D63072A0A53C4002C1323 /* CategoriesCollectionViewCell.swift in Sources */,
 				215C3FBE2A1274180028F62B /* AlbumDetailViewController.swift in Sources */,
 				215C3FCA2A12C2320028F62B /* FavoritesViewController.swift in Sources */,
+				215C3FD62A1366A20028F62B /* MusicService.swift in Sources */,
 				21ACDB8B2A0E6644008511CA /* Album.swift in Sources */,
 				215C3FC22A129ECD0028F62B /* Song.swift in Sources */,
 				217271BD2A0CE08100BAE103 /* ArtistViewController.swift in Sources */,

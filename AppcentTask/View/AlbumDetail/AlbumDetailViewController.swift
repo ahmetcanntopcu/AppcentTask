@@ -43,31 +43,20 @@ class AlbumDetailViewController: UIViewController {
                
                 if let response = response {
                     AlbumDetailViewController.imageUrl = response.coverMedium
-                    if let url2 = URL(string: "https://api.deezer.com/album/\(self.selectedAlbumId)/tracks") {
-                        URLSession.shared.dataTask(with: url2) { data, response, error in
-                            guard let data = data, error == nil else {
-                                print("Error: \(error?.localizedDescription ?? "Unknown error")")
-                                return
-                            }
-                            
-                            do {
-                                // Decode the JSON response
-                                let decoder = JSONDecoder()
-                                let response = try? decoder.decode(SongResponse.self, from: data)
-                                if let response = response {
-                                    self.songs = response.data
-                                }
+                    if let urlSecond = URL(string: "https://api.deezer.com/album/\(self.selectedAlbumId)/tracks") {
+                        MusicService.fetchData(from: urlSecond) { (result: Result<SongResponse, Error>) in
+                            switch result {
+                            case .success(let response):
+                                self.songs = response.data
                                 
                                 DispatchQueue.main.async {
                                     self.albumDetailTableView.reloadData()
                                 }
-                                        
-                                
-                            } catch {
-                                print("Error decoding response: \(error.localizedDescription)")
+                            case .failure(let error):
+                                // Handle the error
+                                print("Error: \(error.localizedDescription)")
                             }
-                            
-                        }.resume()
+                        }
                     }
                 }
             } catch {

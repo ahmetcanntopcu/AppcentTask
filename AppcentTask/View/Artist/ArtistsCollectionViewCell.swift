@@ -22,28 +22,25 @@ class ArtistsCollectionViewCell: UICollectionViewCell {
     }
     
     public func configure(with artist: Artist) {
-        
         self.artistLbl.text = artist.name
         
         if let url = URL(string: artist.pictureMedium) {
-            URLSession.shared.dataTask(with: url) { data, response, error in
-                if let error = error {
+            MusicService.fetchImageData(from: url) { result in
+                switch result {
+                case .success(let imageData):
+                    DispatchQueue.main.async {
+                        let image = UIImage(data: imageData)
+                        self.artistImageView.image = image
+                    }
+                case .failure(let error):
                     print("Error loading image: \(error.localizedDescription)")
-                    return
                 }
-                guard let data = data, let image = UIImage(data: data) else {
-                    print("Invalid image data")
-                    return
-                }
-                DispatchQueue.main.async {
-                    self.artistImageView.image = image
-                }
-            }.resume()
+            }
         } else {
             print("Invalid image URL")
         }
     }
-         
+
 
     
     static func nib() -> UINib {

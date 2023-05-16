@@ -34,32 +34,22 @@ class ArtistViewController: UIViewController {
         // Call the API with selected category ID
         let categoryId = selectedCategoryID
         let url = URL(string: "https://api.deezer.com/genre/\(categoryId)/artists")!
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            
-            guard let data = data, error == nil else {
-                print("Error: \(error?.localizedDescription ?? "Unknown error")")
-                return
-            }
-
-            do {
-                // Decode the JSON response
-                let decoder = JSONDecoder()
-                let response = try? decoder.decode(ArtistResponse.self, from: data)
-                if let response = response {
-                    self.artists = response.data
-                }
-                        
+        MusicService.fetchData(from: url) { (result: Result<ArtistResponse, Error>) in
+            switch result {
+            case .success(let response):
+                self.artists = response.data
+                
                 DispatchQueue.main.async {
                     self.artistCollectionView.reloadData()
                 }
-            } catch {
-                print("Error decoding response: \(error.localizedDescription)")
+            case .failure(let error):
+                // Handle the error
+                print("Error: \(error.localizedDescription)")
             }
-        }.resume()
+        }
         
     }
     
-
 }
 
 extension ArtistViewController: UICollectionViewDelegate {

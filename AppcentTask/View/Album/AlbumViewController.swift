@@ -36,8 +36,6 @@ class AlbumViewController: UIViewController {
                 print("Error: \(error?.localizedDescription ?? "Unknown error")")
                 return
             }
-            
-            
             do {
                 // Decode the JSON response
                 let decoder = JSONDecoder()
@@ -45,19 +43,17 @@ class AlbumViewController: UIViewController {
                
                 if let response = response {
                     if let url = URL(string: response.pictureXL) {
-                        URLSession.shared.dataTask(with: url) { data, response, error in
-                            if let error = error {
+                        MusicService.fetchImageData(from: url) { result in
+                            switch result {
+                            case .success(let imageData):
+                                DispatchQueue.main.async {
+                                    let image = UIImage(data: imageData)
+                                    self.artistImg.image = image
+                                }
+                            case .failure(let error):
                                 print("Error loading image: \(error.localizedDescription)")
-                                return
                             }
-                            guard let data = data, let image = UIImage(data: data) else {
-                                print("Invalid image data")
-                                return
-                            }
-                            DispatchQueue.main.async {
-                                self.artistImg.image = image
-                            }
-                        }.resume()
+                        }
                     }
                     
                     
@@ -67,29 +63,20 @@ class AlbumViewController: UIViewController {
             }
         }.resume()
         
-        let url2 = URL(string: "https://api.deezer.com/artist/\(artistId)/top?limit=50")!
-        URLSession.shared.dataTask(with: url2) { data, response, error in
-            
-            guard let data = data, error == nil else {
-                print("Error: \(error?.localizedDescription ?? "Unknown error")")
-                return
-            }
-
-            do {
-                // Decode the JSON response
-                let decoder = JSONDecoder()
-                let response = try? decoder.decode(TrackResponse.self, from: data)
-                if let response = response {
-                    self.tracks = response.data
-                }
-                        
+        let urlSecond = URL(string: "https://api.deezer.com/artist/\(artistId)/top?limit=50")!
+        MusicService.fetchData(from: urlSecond) { (result: Result<TrackResponse, Error>) in
+            switch result {
+            case .success(let response):
+                self.tracks = response.data
+                
                 DispatchQueue.main.async {
                     self.albumTableView.reloadData()
                 }
-            } catch {
-                print("Error decoding response: \(error.localizedDescription)")
+            case .failure(let error):
+                // Handle the error
+                print("Error: \(error.localizedDescription)")
             }
-        }.resume()
+        }
         
     }
 

@@ -43,20 +43,17 @@ class AlbumDetailTableViewCell: UITableViewCell {
 
             
         if let url = URL(string: urlImg) {
-                URLSession.shared.dataTask(with: url) { data, response, error in
-                    print(url)
-                    if let error = error {
-                        print("Error loading image: \(error.localizedDescription)")
-                        return
-                    }
-                    guard let data = data, let image = UIImage(data: data) else {
-                        print("Invalid image data")
-                        return
-                    }
+            MusicService.fetchImageData(from: url) { result in
+                switch result {
+                case .success(let imageData):
                     DispatchQueue.main.async {
+                        let image = UIImage(data: imageData)
                         self.songImageView.image = image
                     }
-                }.resume()
+                case .failure(let error):
+                    print("Error loading image: \(error.localizedDescription)")
+                }
+            }
             } else {
                 print("Invalid image URL")
             }
